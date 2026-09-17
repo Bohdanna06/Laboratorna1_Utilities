@@ -1,75 +1,61 @@
-п»їusing System;
-using System.Data;
-using System.Windows.Forms;
-using MySqlConnector;
 
 namespace Laboratorna1_Utilities
 {
     public partial class Form1 : Form
     {
-        
-        private string connectionString = "Server=localhost;Database=Utilities;User ID=root;Password=bohdanna1106;";
-
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
+        //private void btnLoad_Click(object sender, EventArgs e)
+        //{
+        //    LoadData();
+        //}
+        private void LoadData()
+        {
+            try
+            {
+                using (var db = new AppDbContext())
+                {
+                    var data = db.TenantServices
+                        .Select(ts => new
+                        {
+                            Особовий_рахунок = ts.Tenant.AccountNumber,
+                            ПІБ = ts.Tenant.FullName,
+                            Адреса = ts.Tenant.Address,
+                            Мешканців = ts.Tenant.OccupantsCount,
+                            Площа_м2 = ts.Tenant.Area,
+                            Послуга = ts.Service.ServiceName,
+                            Тариф_за_м2 = ts.Service.RatePerSqMeter ?? 0,
+                            Тариф_за_особу = ts.Service.RatePerPerson ?? 0,
+                            Нараховано_грн = ts.Service.RatePerSqMeter.HasValue && ts.Service.RatePerSqMeter > 0
+                                ? ts.Tenant.Area * ts.Service.RatePerSqMeter.Value
+                                : ts.Tenant.OccupantsCount * (ts.Service.RatePerPerson ?? 0)
+                        })
+                        .OrderBy(x => x.Особовий_рахунок)
+                        .ToList();
+
+                    dgvData.DataSource = data;
+                    dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    dgvData.Columns["Нараховано_грн"].DefaultCellStyle.Format = "N2";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Помилка підключення через EF Core: " + ex.Message);
+            }
+        }
+
+        private void dgvData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnLoad_Click_1(object sender, EventArgs e)
         {
             LoadData();
         }
 
- 
-        private void LoadData()
-        {
-           
-            string query = @"
-                SELECT 
-                    t.AccountNumber AS `РћСЃРѕР±РѕРІРёР№ СЂР°С…СѓРЅРѕРє`,
-                    t.FullName AS `РџР†Р‘`,
-                    t.Address AS `РђРґСЂРµСЃР°`,
-                    t.OccupantsCount AS `РњРµС€РєР°РЅС†С–РІ`,
-                    t.Area AS `РџР»РѕС‰Р° (РјВІ)`,
-                    s.ServiceName AS `РџРѕСЃР»СѓРіР°`,
-                    IFNULL(s.RatePerSqMeter, 0) AS `РўР°СЂРёС„ Р·Р° РјВІ`,
-                    IFNULL(s.RatePerPerson, 0) AS `РўР°СЂРёС„ Р·Р° РѕСЃРѕР±Сѓ`,
-                    CAST(
-                        CASE 
-                            WHEN s.RatePerSqMeter IS NOT NULL THEN t.Area * s.RatePerSqMeter
-                            ELSE t.OccupantsCount * s.RatePerPerson
-                        END AS DECIMAL(10,2)
-                    ) AS `РќР°СЂР°С…РѕРІР°РЅРѕ (РіСЂРЅ)`
-                FROM Tenants t
-                JOIN TenantServices ts ON t.ID = ts.TenantID
-                JOIN Services s ON ts.ServiceID = s.ID
-                ORDER BY t.AccountNumber;";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
-                    DataTable dataTable = new DataTable();
-
-                  
-                    adapter.Fill(dataTable);
-
-                   
-                    dgvData.DataSource = dataTable;
-                    dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("РџРѕРјРёР»РєР° РїС–РґРєР»СЋС‡РµРЅРЅСЏ РґРѕ Р‘Р”: " + ex.Message);
-                }
-            }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
-}
+    }
