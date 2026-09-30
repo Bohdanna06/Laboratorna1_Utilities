@@ -57,5 +57,9 @@ namespace Laboratorna1_Utilities
             LoadData();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
-    }
+}

@@ -1,4 +1,4 @@
-﻿namespace Laboratorna1_Utilities
+﻿namespace Laboratorna3_Utilities
 {
     public class Service
     {

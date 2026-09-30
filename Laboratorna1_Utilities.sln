@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laboratorna1_Utilities", "Laboratorna1_Utilities\Laboratorna1_Utilities.csproj", "{B7E6D005-C9A1-461D-8402-C431F37E82DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laboratorna3_Utilities", "Laboratorna3_Utilities\Laboratorna3_Utilities.csproj", "{9DA000F9-EB07-45DB-A3C8-74D064F3BF2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B7E6D005-C9A1-461D-8402-C431F37E82DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E6D005-C9A1-461D-8402-C431F37E82DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7E6D005-C9A1-461D-8402-C431F37E82DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA000F9-EB07-45DB-A3C8-74D064F3BF2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA000F9-EB07-45DB-A3C8-74D064F3BF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA000F9-EB07-45DB-A3C8-74D064F3BF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA000F9-EB07-45DB-A3C8-74D064F3BF2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

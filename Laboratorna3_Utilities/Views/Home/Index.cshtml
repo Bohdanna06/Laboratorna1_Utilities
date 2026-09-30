@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Laboratorna3_Utilities.Models.TenantServiceViewModel>
+
+@{
+    ViewData["Title"] = "Комунальні послуги";
+}
+
+<div class="text-center my-4">
+    <h1 class="display-5 fw-bold">Відомості про нарахування послуг</h1>
+</div>
+
+@if (Model != null && Model.Any())
+{
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Особовий рахунок</th>
+                <th>ПІБ</th>
+                <th>Адреса</th>
+                <th>Мешканців</th>
+                <th>Площа (м²)</th>
+                <th>Послуга</th>
+                <th>Тариф / м²</th>
+                <th>Тариф / особа</th>
+                <th>Нараховано (грн)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Особовий_рахунок</td>
+                    <td>@item.ПІБ</td>
+                    <td>@item.Адреса</td>
+                    <td>@item.Мешканців</td>
+                    <td>@item.Площа_м2</td>
+                    <td>@item.Послуга</td>
+                    <td>@item.Тариф_за_м2.ToString("N2")</td>
+                    <td>@item.Тариф_за_особу.ToString("N2")</td>
+                    <td class="fw-bold text-success">@item.Нараховано_грн.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+else
+{
+	<div class="alert alert-info text-center" role="alert">
+		Дані про нарахування послуг відсутні.
+	</div>
+}

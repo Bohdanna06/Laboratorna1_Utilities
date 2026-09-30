@@ -1,0 +1,28 @@
+﻿@model Laboratorna3_Utilities.Tenant
+
+@{
+    ViewData["Title"] = "Видалити мешканця";
+}
+
+<h2 class="text-danger">Видалення мешканця</h2>
+<p>Ви впевнені, що хочете видалити цей запис?</p>
+<hr />
+
+<div class="card p-3 mb-3">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Особовий рахунок</dt>
+        <dd class="col-sm-9">@Model.AccountNumber</dd>
+
+        <dt class="col-sm-3">ПІБ</dt>
+        <dd class="col-sm-9">@Model.FullName</dd>
+
+        <dt class="col-sm-3">Адреса</dt>
+        <dd class="col-sm-9">@Model.Address</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="ID" />
+    <button type="submit" class="btn btn-danger">Підтвердити видалення</button>
+    <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+</form>
