@@ -1,0 +1,24 @@
+﻿@model Laboratorna3_Utilities.TenantService
+
+@{
+    ViewData["Title"] = "Скасування послуги";
+}
+
+<h3>Ви впевнені, що хочете скасувати цю послугу для мешканця?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Мешканець:</dt>
+        <dd class="col-sm-9">@Model.Tenant.FullName (@Model.Tenant.AccountNumber)</dd>
+
+        <dt class="col-sm-3">Послуга:</dt>
+        <dd class="col-sm-9">@Model.Service.ServiceName</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" name="tenantId" value="@Model.TenantID" />
+        <input type="hidden" name="serviceId" value="@Model.ServiceID" />
+        <button type="submit" class="btn btn-danger">Скасувати послугу</button>
+        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+    </form>
+</div>

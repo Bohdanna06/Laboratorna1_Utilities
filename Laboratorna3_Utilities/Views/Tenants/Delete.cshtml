@@ -1,28 +1,26 @@
 ﻿@model Laboratorna3_Utilities.Tenant
 
 @{
-    ViewData["Title"] = "Видалити мешканця";
+    ViewData["Title"] = "Видалення мешканця";
 }
 
-<h2 class="text-danger">Видалення мешканця</h2>
-<p>Ви впевнені, що хочете видалити цей запис?</p>
-<hr />
+<h3>Ви впевнені, що хочете видалити цей запис?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AccountNumber)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.AccountNumber)</dd>
 
-<div class="card p-3 mb-3">
-    <dl class="row mb-0">
-        <dt class="col-sm-3">Особовий рахунок</dt>
-        <dd class="col-sm-9">@Model.AccountNumber</dd>
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FullName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.FullName)</dd>
 
-        <dt class="col-sm-3">ПІБ</dt>
-        <dd class="col-sm-9">@Model.FullName</dd>
-
-        <dt class="col-sm-3">Адреса</dt>
-        <dd class="col-sm-9">@Model.Address</dd>
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Address)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.Address)</dd>
     </dl>
-</div>
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="ID" />
-    <button type="submit" class="btn btn-danger">Підтвердити видалення</button>
-    <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
-</form>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <button type="submit" class="btn btn-danger">Видалити</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

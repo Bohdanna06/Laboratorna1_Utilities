@@ -1,0 +1,26 @@
+﻿@model Laboratorna3_Utilities.Service
+
+@{
+    ViewData["Title"] = "Видалення послуги";
+}
+
+<h3>Ви впевнені, що хочете видалити цю послугу?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ServiceName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.ServiceName)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RatePerSqMeter)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.RatePerSqMeter)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RatePerPerson)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(m => m.RatePerPerson)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <button type="submit" class="btn btn-danger">Видалити</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

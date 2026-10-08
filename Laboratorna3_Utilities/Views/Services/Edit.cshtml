@@ -1,0 +1,30 @@
+﻿@model Laboratorna3_Utilities.Service
+
+@{
+    ViewData["Title"] = "Редагування послуги";
+}
+
+<h2>Редагувати послугу</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="ID" />
+            <div class="mb-3">
+                <label asp-for="ServiceName" class="form-label"></label>
+                <input asp-for="ServiceName" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RatePerSqMeter" class="form-label"></label>
+                <input asp-for="RatePerSqMeter" class="form-control" type="number" step="0.01" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RatePerPerson" class="form-label"></label>
+                <input asp-for="RatePerPerson" class="form-control" type="number" step="0.01" />
+            </div>
+            <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+            <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Laboratorna3_Utilities.Service>
+
+@{
+    ViewData["Title"] = "Комунальні послуги";
+}
+
+<h2>Список послуг</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Додати нову послугу</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ServiceName)</th>
+            <th>@Html.DisplayNameFor(model => model.RatePerSqMeter)</th>
+            <th>@Html.DisplayNameFor(model => model.RatePerPerson)</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                <td>@(item.RatePerSqMeter.HasValue ? item.RatePerSqMeter.Value.ToString("N2") : "-")</td>
+                <td>@(item.RatePerPerson.HasValue ? item.RatePerPerson.Value.ToString("N2") : "-")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm">Редагувати</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@model Laboratorna3_Utilities.Service
+
+@{
+    ViewData["Title"] = "Створити послугу";
+}
+
+<h2>Додати послугу</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div class="mb-3">
+                <label asp-for="ServiceName" class="form-label"></label>
+                <input asp-for="ServiceName" class="form-control" />
+                <span asp-validation-for="ServiceName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="RatePerSqMeter" class="form-label"></label>
+                <input asp-for="RatePerSqMeter" class="form-control" type="number" step="0.01" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RatePerPerson" class="form-label"></label>
+                <input asp-for="RatePerPerson" class="form-control" type="number" step="0.01" />
+            </div>
+            <button type="submit" class="btn btn-success">Зберегти</button>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+</div>

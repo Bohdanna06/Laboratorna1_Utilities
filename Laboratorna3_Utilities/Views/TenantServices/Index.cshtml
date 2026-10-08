@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Laboratorna3_Utilities.TenantService>
+
+@{
+    ViewData["Title"] = "Призначені послуги";
+}
+
+<h2>Призначення послуг мешканцям</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Призначити послугу мешканцю</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Особовий рахунок</th>
+            <th>Мешканець (ПІБ)</th>
+            <th>Назва послуги</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Tenant.AccountNumber</td>
+                <td>@item.Tenant.FullName</td>
+                <td>@item.Service.ServiceName</td>
+                <td>
+                    <a asp-action="Delete" asp-route-tenantId="@item.TenantID" asp-route-serviceId="@item.ServiceID" class="btn btn-danger btn-sm">Скасувати послугу</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

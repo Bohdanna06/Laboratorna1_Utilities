@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Laboratorna3_Utilities.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Laboratorna3_Utilities.Controllers
 {
@@ -13,53 +14,34 @@ namespace Laboratorna3_Utilities.Controllers
             _context = context;
         }
 
-        // (Read)
+        // (Read) — Список всіх мешканців
         public async Task<IActionResult> Index()
         {
             var tenants = await _context.Tenants.ToListAsync();
             return View(tenants);
         }
 
-        
         // GET: Tenants/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Services = await _context.Services.ToListAsync();
             return View();
         }
 
         // POST: Tenants/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Tenant tenant, int[] selectedServices)
+        public async Task<IActionResult> Create(Tenant tenant)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(tenant);
-                await _context.SaveChangesAsync(); // Зберігаємо мешканця, щоб отримати його ID
-
-                if (selectedServices != null && selectedServices.Length > 0)
-                {
-                    foreach (var serviceId in selectedServices)
-                    {
-                        _context.TenantServices.Add(new TenantService
-                        {
-                            TenantID = tenant.ID,
-                            ServiceID = serviceId
-                        });
-                    }
-                    await _context.SaveChangesAsync();
-                }
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Services = await _context.Services.ToListAsync();
             return View(tenant);
         }
 
-
-
-        // 3. Редагування - GET 
+        // GET: Tenants/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -67,50 +49,34 @@ namespace Laboratorna3_Utilities.Controllers
             var tenant = await _context.Tenants.FindAsync(id);
             if (tenant == null) return NotFound();
 
-            ViewBag.Services = await _context.Services.ToListAsync();
-            ViewBag.SelectedServices = await _context.TenantServices
-                .Where(ts => ts.TenantID == id)
-                .Select(ts => ts.ServiceID)
-                .ToListAsync();
-
             return View(tenant);
         }
 
-        // 3. Редагування - POST (Оновлення в БД)
+        // POST: Tenants/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Tenant tenant, int[] selectedServices)
+        public async Task<IActionResult> Edit(int id, Tenant tenant)
         {
-            if (id != tenant.ID) return NotFound(); 
+            if (id != tenant.ID) return NotFound();
 
             if (ModelState.IsValid)
             {
-                _context.Update(tenant);
-              
-                var oldServices = _context.TenantServices.Where(ts => ts.TenantID == id);
-                _context.TenantServices.RemoveRange(oldServices);
-
-                if (selectedServices != null)
+                try
                 {
-                    foreach (var serviceId in selectedServices)
-                    {
-                        _context.TenantServices.Add(new TenantService
-                        {
-                            TenantID = tenant.ID,
-                            ServiceID = serviceId
-                        });
-                    }
+                    _context.Update(tenant);
+                    await _context.SaveChangesAsync();
                 }
-
-                await _context.SaveChangesAsync();
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Tenants.Any(e => e.ID == tenant.ID)) return NotFound();
+                    else throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Services = await _context.Services.ToListAsync();
             return View(tenant);
         }
 
-        // 4. Видалення - GET (Підтвердження видалення)
+        // GET: Tenants/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -121,7 +87,7 @@ namespace Laboratorna3_Utilities.Controllers
             return View(tenant);
         }
 
-        // 4. Видалення - POST (Видалення з БД)
+        // POST: Tenants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -134,5 +100,7 @@ namespace Laboratorna3_Utilities.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-    }
+
+    
+}
 }

@@ -1,0 +1,30 @@
+﻿@model Laboratorna3_Utilities.TenantService
+
+@{
+    ViewData["Title"] = "Призначення послуги";
+}
+
+<h2>Призначити послугу мешканцю</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+     
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Оберіть мешканця</label>
+                <select asp-for="TenantID" class="form-select" asp-items="ViewBag.TenantID"></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Оберіть послугу</label>
+                <select asp-for="ServiceID" class="form-select" asp-items="ViewBag.ServiceID"></select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Призначити</button>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+</div>
