@@ -1,0 +1,60 @@
+﻿@page
+@model Laboratorna4_Utilities.Pages.Tenants.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant[0].AccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant[0].FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant[0].OccupantsCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant[0].Area)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Tenant) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OccupantsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
