@@ -1,0 +1,68 @@
+﻿@page "/tenants"
+@using Microsoft.AspNetCore.Components.Forms
+@using Laboratorna5_Utilities.Models
+@using Laboratorna5_Utilities.Services
+@inject AppDbService DbService
+
+<h3>Реєстр мешканців</h3>
+
+<!-- Кнопка створення нового мешканця -->
+<a href="/tenants/create" class="btn btn-primary mb-3">Додати нового мешканця</a>
+
+@if (tenantsList == null)
+{
+    <p><em>Завантаження...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Особовий рахунок</th>
+                <th>ПІБ</th>
+                <th>Адреса</th>
+                <th>Мешканців</th>
+                <th>Площа (м²)</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tenant in tenantsList)
+            {
+                <tr>
+                    <td>@tenant.AccountNumber</td>
+                    <td>@tenant.FullName</td>
+                    <td>@tenant.Address</td>
+                    <td>@tenant.OccupantsCount</td>
+                    <td>@tenant.Area</td>
+                    <td>
+                        <!-- Кнопка Редагувати -->
+                        <a href="/tenants/edit/@tenant.ID" class="btn btn-warning btn-sm me-1">Редагувати</a>
+                        <!-- Кнопка Видалити -->
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteTenant(tenant.ID)">Видалити</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Tenant>? tenantsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        tenantsList = await DbService.GetTenantsAsync();
+    }
+
+    private async Task DeleteTenant(int id)
+    {
+        await DbService.DeleteTenantAsync(id);
+        await LoadData();
+    }
+}

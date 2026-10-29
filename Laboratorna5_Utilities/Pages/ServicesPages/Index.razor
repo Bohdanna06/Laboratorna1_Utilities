@@ -1,0 +1,60 @@
+﻿@page "/services"
+@using Laboratorna5_Utilities.Models
+@using Laboratorna5_Utilities.Services
+@inject AppDbService DbService
+
+<h3>Список послуг</h3>
+
+<a href="/services/create" class="btn btn-primary mb-3">Додати нову послугу</a>
+
+@if (servicesList == null)
+{
+    <p><em>Завантаження...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Назва послуги</th>
+                <th>Тариф за м²</th>
+                <th>Тариф за особу</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in servicesList)
+            {
+                <tr>
+                    <td>@item.ServiceName</td>
+                    <td>@(item.RatePerSqMeter.HasValue ? item.RatePerSqMeter.Value.ToString("0.00") : "-")</td>
+                    <td>@(item.RatePerPerson.HasValue ? item.RatePerPerson.Value.ToString("0.00") : "-")</td>
+                    <td>
+                        <a href="/services/edit/@item.ID" class="btn btn-warning btn-sm">Редагувати</a>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteService(item.ID)">Видалити</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Laboratorna5_Utilities.Models.Service>? servicesList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        servicesList = await DbService.GetServicesAsync();
+    }
+
+    private async Task DeleteService(int id)
+    {
+        await DbService.DeleteServiceAsync(id);
+        await LoadData();
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page "/tenant-services/create"
+@using Microsoft.AspNetCore.Components.Forms
+@using Laboratorna5_Utilities.Models
+@using Laboratorna5_Utilities.Services
+@inject AppDbService DbService
+@inject NavigationManager Navigation
+
+<h3>Призначити послугу мешканцю</h3>
+
+<EditForm Model="model" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Оберіть мешканця:</label>
+        <InputSelect @bind-Value="model.TenantID" class="form-control">
+            <option value="0">-- Оберіть мешканця --</option>
+            @foreach (var tenant in tenants)
+            {
+                <option value="@tenant.ID">@tenant.FullName (@tenant.Address)</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Оберіть послугу:</label>
+        <InputSelect @bind-Value="model.ServiceID" class="form-control">
+            <option value="0">-- Оберіть послугу --</option>
+            @foreach (var service in services)
+            {
+                <option value="@service.ID">@service.ServiceName</option>
+            }
+        </InputSelect>
+    </div>
+
+    <button type="submit" class="btn btn-success" disabled="@(model.TenantID == 0 || model.ServiceID == 0)">Зберегти</button>
+    <a href="/tenant-services" class="btn btn-secondary">Скасувати</a>
+</EditForm>
+
+@code {
+    private TenantService model = new TenantService();
+    private List<Tenant> tenants = new List<Tenant>();
+    private List<Laboratorna5_Utilities.Models.Service> services = new List<Laboratorna5_Utilities.Models.Service>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tenants = await DbService.GetTenantsAsync();
+        services = await DbService.GetServicesAsync();
+    }
+
+    private async Task Save()
+    {
+        if (model.TenantID > 0 && model.ServiceID > 0)
+        {
+            await DbService.AddTenantServiceAsync(model);
+            Navigation.NavigateTo("/tenant-services");
+        }
+    }
+}

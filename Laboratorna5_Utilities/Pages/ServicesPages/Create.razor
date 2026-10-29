@@ -1,0 +1,40 @@
+﻿@page "/services/create"
+@using Microsoft.AspNetCore.Components.Forms
+@using Laboratorna5_Utilities.Models
+@using Laboratorna5_Utilities.Services
+@inject AppDbService DbService
+@inject NavigationManager Navigation
+
+<h3>Додати послугу</h3>
+
+<EditForm Model="serviceModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    
+    <div class="mb-3">
+        <label class="form-label">Назва послуги:</label>
+        <InputText @bind-Value="serviceModel.ServiceName" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Тариф за м²:</label>
+        <InputNumber @bind-Value="serviceModel.RatePerSqMeter" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Тариф за особу:</label>
+        <InputNumber @bind-Value="serviceModel.RatePerPerson" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a href="/services" class="btn btn-secondary">Скасувати</a>
+</EditForm>
+
+@code {
+    private Laboratorna5_Utilities.Models.Service serviceModel = new Laboratorna5_Utilities.Models.Service();
+
+    private async Task Save()
+    {
+        await DbService.AddServiceAsync(serviceModel);
+        Navigation.NavigateTo("/services");
+    }
+}

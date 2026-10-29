@@ -1,0 +1,46 @@
+﻿@page "/tenants/create"
+@using Microsoft.AspNetCore.Components.Forms
+@using Laboratorna5_Utilities.Models
+@using Laboratorna5_Utilities.Services
+@inject AppDbService DbService
+@inject NavigationManager Navigation
+
+<h3>Додати мешканця</h3>
+
+<EditForm Model="tenantModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Особовий рахунок:</label>
+        <InputText @bind-Value="tenantModel.AccountNumber" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">ПІБ:</label>
+        <InputText @bind-Value="tenantModel.FullName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Адреса:</label>
+        <InputText @bind-Value="tenantModel.Address" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Кількість мешканців:</label>
+        <InputNumber @bind-Value="tenantModel.OccupantsCount" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Площа (м²):</label>
+        <InputNumber @bind-Value="tenantModel.Area" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a href="/tenants" class="btn btn-secondary">Скасувати</a>
+</EditForm>
+
+@code {
+    private Tenant tenantModel = new Tenant();
+
+    private async Task Save()
+    {
+        await DbService.AddTenantAsync(tenantModel);
+        Navigation.NavigateTo("/tenants");
+    }
+}
